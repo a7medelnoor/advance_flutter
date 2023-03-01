@@ -17,6 +17,7 @@ class CustomerResponse {
   String? name;
   @JsonKey(name: "numberOfNotifications")
   int? numberOfNotifications;
+  CustomerResponse(this.id, this.name, this.numberOfNotifications);
 }
 
 @JsonSerializable()
@@ -27,10 +28,16 @@ class ContactsResponse {
   String? email;
   @JsonKey(name: "link")
   String? link;
+  ContactsResponse(this.phone, this.email, this.link);
 }
 class AuthenticationResponse extends BaseResponse{
   @JsonKey(name: "customer")
   CustomerResponse? customer;
   @JsonKey(name: "contacts")
   ContactsResponse? contacts;
+  AuthenticationResponse(this.customer, this.contacts);
+  // From json
+
+
+  // To json
 }
