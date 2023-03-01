@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:advance_flutter/domain/model.dart';
 import 'package:advance_flutter/presentation/base/baseviewmodel.dart';
