@@ -26,7 +26,7 @@ class Contacts {
   Contacts(this.phone, this.email, this.link);
 }
 class Authentication{
-  Customer customer;
-  Contacts contacts;
+  Customer? customer;
+  Contacts? contacts;
   Authentication(this.customer, this.contacts);
 }
