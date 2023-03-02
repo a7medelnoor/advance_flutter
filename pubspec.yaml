@@ -48,6 +48,7 @@ dev_dependencies:
   retrofit_generator: ^5.0.0
   build_runner: ^2.1.7
   json_serializable: ^6.6.0
+  dartz: ^0.10.1
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
