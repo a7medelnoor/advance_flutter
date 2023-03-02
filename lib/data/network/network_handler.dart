@@ -34,3 +34,22 @@ class ResponseCode {
   static const int NO_INTERNET_CONNECTION = -6;
   static const int UNKNOWN = -7;
 }
+
+class ResponseMessage {
+
+  static const String SUCESS = "Success"; // success with data
+  static const String NO_CONTENT = "Success"; // success without data (no content)
+  static const String BAD_REQUEST = "Bad request try again later"; // failure, API rejected request
+  static const String UNAUTHERISED = "User is authorized, Try again later"; // failure, API user is not authorized
+  static const String FORBIDDEN = "Forbidden request, Try again later"; // failure, API rejected request
+  static const String INTERNAL_SERVER_ERROR = "something went wrong,Try again later";  // failure, crash in server side
+
+  // local status code
+  static const String CONNECT_TIMEOUT = "Timeout error, Try again later";
+  static const String CANCLE = "Request was canceled, Try again later";
+  static const String RECIVE_TIMEOUT = "Timeout error, Try again later";
+  static const String SEND_TIMEOUT = "Timeout error, Try again later";
+  static const String CACHE_ERROR = "Cache error, Try again later";
+  static const String NO_INTERNET_CONNECTION = "Please check your intent connection";
+  static const String UNKNOWN = "something went wrong,Try again later";
+}
