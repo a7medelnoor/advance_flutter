@@ -1,4 +1,4 @@
-import 'package:advance_flutter/domain/model.dart';
+import 'package:advance_flutter/domain/model/model.dart';
 import 'package:advance_flutter/presentation/onboarding/viewmodel/onboarding_viewmodel.dart';
 import 'package:advance_flutter/presentation/resources/assests_manager.dart';
 import 'package:advance_flutter/presentation/resources/color_manager.dart';
