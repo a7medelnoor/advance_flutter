@@ -1,5 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:json_annotation/json_annotation.dart';
+part 'responses.g.dart';
 
 @JsonSerializable()
 class BaseResponse {
@@ -18,6 +19,10 @@ class CustomerResponse {
   @JsonKey(name: "numberOfNotifications")
   int? numberOfNotifications;
   CustomerResponse(this.id, this.name, this.numberOfNotifications);
+  // From json
+  factory CustomerResponse.fromJson(Map<String, dynamic> json) => _$CustomerResponseFromJson(json);
+  // To json
+  Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -29,7 +34,12 @@ class ContactsResponse {
   @JsonKey(name: "link")
   String? link;
   ContactsResponse(this.phone, this.email, this.link);
+  // From json
+  factory ContactsResponse.fromJson(Map<String, dynamic> json) => _$ContactsResponseFromJson(json);
+  // To json
+  Map<String, dynamic> toJson() => _$ContactsResponseToJson(this);
 }
+@JsonSerializable()
 class AuthenticationResponse extends BaseResponse{
   @JsonKey(name: "customer")
   CustomerResponse? customer;
@@ -37,7 +47,7 @@ class AuthenticationResponse extends BaseResponse{
   ContactsResponse? contacts;
   AuthenticationResponse(this.customer, this.contacts);
   // From json
-
-
+   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) => _$AuthenticationResponseFromJson(json);
   // To json
+   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 }
