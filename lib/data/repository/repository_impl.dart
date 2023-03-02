@@ -32,7 +32,7 @@ class RepositoryImpl implements Repository {
       }
     } else {
       // return internet connection error
-      return left(Failure(409, "Please check you internet connection"));
+      return left(Failure(501, "Please check you internet connection"));
     }
   }
 }
