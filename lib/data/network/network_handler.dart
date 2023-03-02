@@ -163,3 +163,7 @@ class ResponseMessage {
       "Please check your intent connection";
   static const String DEFAULT = "something went wrong,Try again later";
 }
+class ApiInternalStatus {
+  static const int SUCCESS = 0;
+  static const int FAILURE  = 1;
+}
