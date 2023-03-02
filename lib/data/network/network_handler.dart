@@ -14,3 +14,23 @@ enum DataSource {
   NO_INTERNET_CONNECTION
 
 }
+
+
+class ResponseCode {
+
+  static const int SUCESS = 200; // success with data
+  static const int NO_CONTENT = 201; // success without data (no content)
+  static const int BAD_REQUEST = 400; // failure, API rejected request
+  static const int UNAUTHERISED = 401; // failure, API user is not authorized
+  static const int FORBIDDEN = 403; // failure, API rejected request
+  static const int INTERNAL_SERVER_ERROR = 500;  // failure, crash in server side
+
+  // local status code
+  static const int CONNECT_TIMEOUT = -1;
+  static const int CANCLE = -2;
+  static const int RECIVE_TIMEOUT = -3;
+  static const int SEND_TIMEOUT = -4;
+  static const int CACHE_ERROR = -5;
+  static const int NO_INTERNET_CONNECTION = -6;
+  static const int UNKNOWN = -7;
+}
