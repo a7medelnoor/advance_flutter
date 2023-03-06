@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:advance_flutter/presentation/base/baseviewmodel.dart';
+
+import '../../common/freezed_data_classes.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -32,11 +35,14 @@ class LoginViewModel extends BaseViewModel
   @override
   setPassword(String password) {
     inputPassword.add(password);
+    loginObject=loginObject.copyWith(password: password);
   }
 
   @override
   setUserName(String userName) {
     inputUsername.add(userName);
+    loginObject=loginObject.copyWith(userName: userName);
+
   }
 
   @override
