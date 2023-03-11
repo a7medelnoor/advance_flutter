@@ -12,4 +12,11 @@ class AppStrings {
   static const onBoardingSubTitle3 = "Tut app is an awesome flutter application using clean architecture #3";
   static const onBoardingSubTitle4 = "Tut app is an awesome flutter application using clean architecture #4";
   static const skip = "Skip";
+  static const username = "Username";
+  static const usernameError = "Please enter your username";
+  static const password = "Password";
+  static const passwordError = "Please enter your password";
+  static const login = "Login";
+  static const forgetPassword = "Forget Password";
+  static const notMember = "Not a member? Register now";
 }
