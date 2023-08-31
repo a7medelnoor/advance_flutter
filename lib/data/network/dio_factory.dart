@@ -25,8 +25,8 @@ final  AppPreferences _appPreferences;
     dio.options = BaseOptions(
       baseUrl: Constants.baseUrl,
       headers: headers,
-      receiveTimeout: Constants.apiTimeOut as Duration,
-      sendTimeout: Constants.apiTimeOut as Duration
+      receiveTimeout: Duration(milliseconds: Constants.apiTimeOut),
+        sendTimeout: Duration(milliseconds: Constants.apiTimeOut),
     );
     if(!kReleaseMode){ // if we are in debug mode print the app logs
         dio.interceptors.add(PrettyDioLogger(

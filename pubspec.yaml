@@ -43,8 +43,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   internet_connection_checker: ^1.0.0+1
   pretty_dio_logger: ^1.3.1
-  shared_preferences: ^0.5.5
+  shared_preferences: ^2.2.0
   freezed: ^2.3.2
+  get_it: ^7.6.0
 
 dev_dependencies:
   flutter_test:
@@ -99,15 +100,15 @@ flutter:
   fonts:
      - family: Montserrat
        fonts:
-         - asset: assets/fonts/Montserrat-Bold.ttf
+         - asset: assets/fonts/montserratbold.ttf
            weight: 700
-         - asset: assets/fonts/Montserrat-SemiBold.ttf
+         - asset: assets/fonts/montserratsemibold.ttf
            weight: 600
-         - asset: assets/fonts/Montserrat-Medium.ttf
+         - asset: assets/fonts/montserratmedium.ttf
            weight: 500
-         - asset: assets/fonts/Montserrat-Regular.ttf
+         - asset: assets/fonts/montserratregular.ttf
            weight: 400
-         - asset: assets/fonts/Montserrat-Light.ttf
+         - asset: assets/fonts/montserratlight.ttf
            weight: 300
 
   # For details regarding fonts from package dependencies,

@@ -1,3 +1,7 @@
+import 'package:advance_flutter/data/data_source/remote_data_source.dart';
+import 'package:advance_flutter/data/repository/repository_impl.dart';
+import 'package:advance_flutter/domain/repository/repository.dart';
+import 'package:advance_flutter/domain/usecase/login_use_case.dart';
 import 'package:advance_flutter/presentation/login/viewmodel/login_viewmodel.dart';
 import 'package:advance_flutter/presentation/resources/assests_manager.dart';
 import 'package:advance_flutter/presentation/resources/color_manager.dart';
@@ -5,6 +9,8 @@ import 'package:advance_flutter/presentation/resources/routes_manager.dart';
 import 'package:advance_flutter/presentation/resources/strings_manager.dart';
 import 'package:advance_flutter/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+
+import '../../app/di.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -14,7 +20,15 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final LoginViewModel _viewModel = LoginViewModel();
+
+  // instead of the below we will do di
+  // RemoteDataSource _remoteDataSource = RemoteDataSourceImp(_appServiceClient);
+  // Repository _repository = RepositoryImpl(_remoteDataSource, _networkInfo);
+  // LoginUseCase _loginUseCase = LoginUseCase(_repository);
+  // final LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+
+   // get the dependencies form the instance
+  final LoginViewModel _viewModel = instance<LoginViewModel>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _fromKey = GlobalKey<FormState>();
@@ -118,9 +132,9 @@ class _LoginViewState extends State<LoginView> {
           Padding(
             padding: const EdgeInsets.only(
               top: AppPadding.p8,
-                left: AppPadding.p28, right: AppPadding.p28),
+                left: AppPadding.p28, right: AppPadding.p12),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton(
                   onPressed: () {
