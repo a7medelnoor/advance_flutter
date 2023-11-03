@@ -12,4 +12,9 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Container();
   }
+  @override
+  void dispose() {
+    // TODO: call view mode . dispose
+    super.dispose();
+  }
 }

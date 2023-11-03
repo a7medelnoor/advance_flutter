@@ -19,4 +19,16 @@ class AppStrings {
   static const login = "Login";
   static const forgetPassword = "Forget Password";
   static const notMember = "Not a member? \n Register now";
+
+  static const loading = "Loading...";
+  static const retryAgain = "Retry again";
+  static const success = "Success";
+  static const resetPassword = "Reset Password";
+  static const emailHint = "Enter Email";
+  static const invalidEmail = "Invalid Email";
+  static const ok = "Ok";
+  static const usernameInvalid = "User name should be ast least 8 characters";
+  static const emailInvalid = "Please enter a valid email address";
+  static const mobileNumberInvalid = "Please enter a valid mobile number";
+  static const passwordNumberInvalid = "Password should be at least 6 chatacters";
 }

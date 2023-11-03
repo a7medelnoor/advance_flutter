@@ -2,6 +2,7 @@ import 'package:advance_flutter/data/data_source/remote_data_source.dart';
 import 'package:advance_flutter/data/repository/repository_impl.dart';
 import 'package:advance_flutter/domain/repository/repository.dart';
 import 'package:advance_flutter/domain/usecase/login_use_case.dart';
+import 'package:advance_flutter/presentation/common/state_rander/state_randerer_impl.dart';
 import 'package:advance_flutter/presentation/login/viewmodel/login_viewmodel.dart';
 import 'package:advance_flutter/presentation/resources/assests_manager.dart';
 import 'package:advance_flutter/presentation/resources/color_manager.dart';
@@ -9,7 +10,9 @@ import 'package:advance_flutter/presentation/resources/routes_manager.dart';
 import 'package:advance_flutter/presentation/resources/strings_manager.dart';
 import 'package:advance_flutter/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
+import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 
 class LoginView extends StatefulWidget {
@@ -32,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _fromKey = GlobalKey<FormState>();
-
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   _bind() {
     // starting the view model
     _viewModel.start();
@@ -42,6 +45,16 @@ class _LoginViewState extends State<LoginView> {
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
         .addListener(() => _viewModel.setPassword(_passwordController.text));
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream.listen((isLoggedIn) {
+          if(isLoggedIn){
+            // navigate to main screen
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
+              _appPreferences.setUserLogIn();
+              Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+
+            });
+          }
+    });
   }
 
   @override
@@ -52,13 +65,21 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return _getContentWidget();
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: StreamBuilder<FlowState>(
+        stream: _viewModel.outputState,
+        builder: (context, snapshot){
+          return snapshot.data?.getScreenWidget(context,_getContentWidget(),(){
+             _viewModel.login();
+          }) ?? _getContentWidget();
+        },
+      ),
+    );
   }
 
   Widget _getContentWidget() {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-        body: Container(
+    return Container(
       padding: const EdgeInsets.only(top: AppPadding.p100),
       child: SingleChildScrollView(
         child: Form(
@@ -139,7 +160,7 @@ class _LoginViewState extends State<LoginView> {
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(
-                        context, Routes.forgetPasswordRoute);
+                        context, Routes.forgotPasswordRoute);
                   },
                   child: Text(
                     AppStrings.forgetPassword,
@@ -163,7 +184,7 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
-    ));
+    );
   }
 
   @override

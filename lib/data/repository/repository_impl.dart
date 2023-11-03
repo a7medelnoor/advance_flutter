@@ -42,4 +42,59 @@ class RepositoryImpl implements Repository {
       return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, String>> forgetPassword(String email) async {
+    if(await _networkInfo.isConnected){
+     try{
+         final response  = await _remoteDataSource.forgetPassword(email);
+
+         if(response.status == ApiInternalStatus.SUCCESS){
+           // success
+           // return right
+           return Right(response.toDomain());
+         }else {
+           // failure
+           // return left
+           return Left(Failure(response.status ?? ResponseCode.DEFAULT,
+            response.message ?? ResponseMessage.DEFAULT));
+         }
+     }catch(error){
+       return Left(ErrorHandler.handle(error).failure);
+     }
+    }else {
+          // return network connection erorr
+      // return left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Authentication>> registerUser(RegisterRequest registerRequest)  async{
+    if (await _networkInfo.isConnected) {
+      try{
+// check if it's connected to internet, it's safe to call the API
+        final response = await _remoteDataSource.registerUser(registerRequest);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          return Right(response.toDomain());
+        } else {
+          // failure - return error
+          // return either left
+          return left(Failure(ApiInternalStatus.FAILURE, response.message ?? ResponseMessage.DEFAULT));
+        }
+
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+    } else {
+      // return internet connection error
+      return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
 }
