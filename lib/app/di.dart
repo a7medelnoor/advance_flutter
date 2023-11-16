@@ -6,9 +6,12 @@ import 'package:advance_flutter/data/network/network_info.dart';
 import 'package:advance_flutter/data/repository/repository_impl.dart';
 import 'package:advance_flutter/domain/repository/repository.dart';
 import 'package:advance_flutter/domain/usecase/login_use_case.dart';
+import 'package:advance_flutter/domain/usecase/register_use_case.dart';
 import 'package:advance_flutter/presentation/login/viewmodel/login_viewmodel.dart';
+import 'package:advance_flutter/presentation/register/viewmodel/register_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/usecase/forget_password_usecase.dart';
@@ -64,5 +67,15 @@ initForgotPasswordModule() {
             () => ForgetPasswordUseCase(instance()));
     instance.registerFactory<ForgotPasswordViewModel>(
             () => ForgotPasswordViewModel(instance()));
+  }
+}
+initRegisterModule() {
+  if (!GetIt.I.isRegistered<RegisterUseCase>()) {
+    instance.registerFactory<RegisterUseCase>(
+            () => RegisterUseCase(instance()));
+    instance.registerFactory<RegisterViewModel>(
+            () => RegisterViewModel(instance()));
+    instance.registerFactory<ImagePicker>(
+            () => ImagePicker());
   }
 }

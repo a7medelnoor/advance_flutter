@@ -31,4 +31,12 @@ class AppStrings {
   static const emailInvalid = "Please enter a valid email address";
   static const mobileNumberInvalid = "Please enter a valid mobile number";
   static const passwordNumberInvalid = "Password should be at least 6 chatacters";
+
+  static const alreadyHasAccount = "Already have an account ? Login";
+  static const register = "Register";
+  static const mobileNumber = "Mobile";
+  static const profilePicture = "Profile Picture";
+
+  static String photoGallery = "Photo From Gallery";
+  static String photoCamera= "Photo From Camera";
 }
