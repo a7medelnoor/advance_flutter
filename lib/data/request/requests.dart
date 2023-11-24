@@ -6,13 +6,13 @@ class LoginRequest{
 
 class RegisterRequest{
   String userName;
-  String password;
   String countryMobileCode;
   String mobileNumber;
-  String profilePicture;
+  String password;
   String email;
+  String profilePicture;
 
-  RegisterRequest(this.userName, this.password, this.countryMobileCode,
-      this.mobileNumber, this.profilePicture, this.email);
+  RegisterRequest(this.userName,  this.countryMobileCode,
+      this.mobileNumber, this.email,this.password,this.profilePicture);
 }
 

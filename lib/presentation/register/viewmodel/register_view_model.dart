@@ -30,9 +30,12 @@ class RegisterViewModel extends BaseViewModel
   StreamController _isAllInputsValidStreamController =
   StreamController<void>.broadcast();
 
+  StreamController isUserLoggedInSuccessfullyStreamController =
+  StreamController<bool>();
+
   RegisterUseCase _registerUseCase;
 
-  var registerViewObject = RegisterObject("", "", "", "", "", "","");
+  var registerViewObject = RegisterObject("", "", "", "", "", "");
 
   RegisterViewModel(this._registerUseCase);
 
@@ -46,11 +49,11 @@ class RegisterViewModel extends BaseViewModel
   @override
   register() async {
     inputState.add(
-        LoadingState(stateRendererType: StateRendererType.popupLoadingState));
+        LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
     (await _registerUseCase.execute(RegisterUseCaseInput(
-      registerViewObject.mobileNumber,
-      registerViewObject.countryMobileCode,
       registerViewObject.userName,
+      registerViewObject.countryMobileCode,
+      registerViewObject.mobileNumber,
       registerViewObject.email,
       registerViewObject.password,
       registerViewObject.profilePicture,
@@ -59,12 +62,13 @@ class RegisterViewModel extends BaseViewModel
             (failure) => {
           // left -> failure
           inputState.add(ErrorState(
-              StateRendererType.popupLoadingState, failure.message))
+              StateRendererType.POPUP_ERROR_STATE, failure.message))
         }, (data) {
       // right -> success (data)
       inputState.add(ContentState());
 
       // navigate to main screen after the login
+      isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
 
@@ -76,6 +80,7 @@ class RegisterViewModel extends BaseViewModel
     _emailStreamController.close();
     _passwordStreamController.close();
     _profilePictureStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
     super.dispose();
   }
 
@@ -161,12 +166,14 @@ class RegisterViewModel extends BaseViewModel
     }
     _validate();
   }
-
   @override
-  Sink get inputEmail => _emailStreamController.sink;
+  Sink get inputUserName => _userNameStreamController.sink;
 
   @override
   Sink get inputMobileNumber => _mobileNumberStreamController.sink;
+
+  @override
+  Sink get inputEmail => _emailStreamController.sink;
 
   @override
   Sink get inputProfilePicture => _profilePictureStreamController.sink;
@@ -174,8 +181,6 @@ class RegisterViewModel extends BaseViewModel
   @override
   Sink get inputUPassword => _passwordStreamController.sink;
 
-  @override
-  Sink get inputUserName => _userNameStreamController.sink;
 
   @override
   Sink get inputAllInputsValid => _isAllInputsValidStreamController.sink;
@@ -238,12 +243,13 @@ class RegisterViewModel extends BaseViewModel
   }
 
   bool _validateAllInputs() {
-    return registerViewObject.profilePicture.isNotEmpty &&
-        registerViewObject.email.isNotEmpty &&
+    return
+      registerViewObject.userName.isNotEmpty &&
+          registerViewObject.countryMobileCode.isNotEmpty &&
+          registerViewObject.mobileNumber.isNotEmpty &&
+          registerViewObject.email.isNotEmpty &&
         registerViewObject.password.isNotEmpty &&
-        registerViewObject.mobileNumber.isNotEmpty &&
-        registerViewObject.userName.isNotEmpty &&
-        registerViewObject.countryMobileCode.isNotEmpty;
+    registerViewObject.profilePicture.isNotEmpty ;
   }
 
   _validate() {
@@ -256,9 +262,10 @@ abstract class RegisterViewModelInput {
 
   setUserName(String userName);
 
+  setCountryCode(String countryCode);
+
   setMobileNumber(String mobileNumber);
 
-  setCountryCode(String countryCode);
 
   setEmail(String email);
 

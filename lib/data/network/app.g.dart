@@ -82,22 +82,22 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<AuthenticationResponse> registerUser(
-    String email,
-    String password,
     String userName,
     String countryMobile,
     String mobileNumber,
+    String email,
+    String password,
     String profilePicture,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'email': email,
-      'password': password,
-      'user_name': userName,
+      'username': userName,
       'country_mobile_code': countryMobile,
       'mobile_number': mobileNumber,
+      'email': email,
+      'password': password,
       'profile_picture': profilePicture,
     };
     final _result = await _dio.fetch<Map<String, dynamic>>(

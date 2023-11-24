@@ -20,11 +20,11 @@ Future<ForgetPasswordResponse> forgetPassword(
 
 @POST("/customers/register")
   Future<AuthenticationResponse> registerUser(
-    @Field("email") String email,
-    @Field("password") String password,
-    @Field("user_name") String userName,
+    @Field("username") String userName,
     @Field("country_mobile_code") String countryMobile,
     @Field("mobile_number") String mobileNumber,
+    @Field("email") String email,
+    @Field("password") String password,
     @Field("profile_picture") String profilePicture,
     );
 }

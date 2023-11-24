@@ -13,17 +13,19 @@ class RegisterUseCase implements BaseUseCase<RegisterUseCaseInput, Authenticatio
   RegisterUseCase(this._repository);
   @override
   Future<Either<Failure, Authentication>> execute(RegisterUseCaseInput input)  async {
-       return await _repository.registerUser(RegisterRequest(input.email, input.password, input.userName, input.countryMobileCode,input.countryMobileCode,input.mobileNumber));
+       return await _repository.registerUser(RegisterRequest(input.userName, input.countryMobileCode,input.mobileNumber,input.email, input.password,input.profilePicture ));
   }
 }
 class RegisterUseCaseInput {
   String userName;
-  String password;
   String countryMobileCode;
   String mobileNumber;
-  String profilePicture;
   String email;
+  String password;
+  String profilePicture;
 
-  RegisterUseCaseInput(this.userName, this.password, this.countryMobileCode,
-      this.mobileNumber, this.profilePicture, this.email);
+
+
+  RegisterUseCaseInput(this.userName,  this.countryMobileCode,
+      this.mobileNumber,  this.email, this.password,this.profilePicture,);
 }

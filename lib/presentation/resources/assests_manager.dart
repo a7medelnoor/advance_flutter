@@ -22,5 +22,5 @@ class JsonAssets {
   static const String loading = "$jsonPath/loading.json";
   static const String nodata = "$jsonPath/nodata.json";
   static const String error = "$jsonPath/error.json";
-  static const String success = "$jsonPath/error.json";
+  static const String success = "$jsonPath/loading.json";
 }

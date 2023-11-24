@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed_data_classes.freezed.dart';
@@ -10,11 +9,6 @@ class LoginObject with _$LoginObject {
 
 @freezed
 class RegisterObject with _$RegisterObject {
-  factory RegisterObject(String userName,
-  String password,
-  String countryMobileCode,
-  String mobileNumber,
-  String profilePicture,
-  String countryCode,
-  String email) = _RegisterObject;
+  factory RegisterObject( String userName, String countryMobileCode, String mobileNumber,
+      String email, String password, String profilePicture) = _RegisterObject;
 }

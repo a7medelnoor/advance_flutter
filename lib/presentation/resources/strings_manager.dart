@@ -39,4 +39,8 @@ class AppStrings {
 
   static String photoGallery = "Photo From Gallery";
   static String photoCamera= "Photo From Camera";
+  static String homeScreenTitle= "Home";
+  static String notificationScreenTitle= "Notification";
+  static String searchScreenTitle= "Search";
+  static String settingsScreenTitle= "Settings";
 }

@@ -8,38 +8,38 @@ import 'package:advance_flutter/presentation/common/state_rander/state_randerer_
 import '../../common/freezed_data_classes.dart';
 import '../../common/state_rander/state_randerer.dart';
 
+
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
-  final StreamController _userNameStreamController =
-      StreamController<String>.broadcast();
-  final StreamController _passwordStreamController =
-      StreamController<String>.broadcast();
+  StreamController _userNameStreamController =
+  StreamController<String>.broadcast();
+  StreamController _passwordStreamController =
+  StreamController<String>.broadcast();
 
-  final StreamController _areAllInputsValidStreamController =
-      StreamController<void>.broadcast();
+  StreamController _isAllInputsValidStreamController =
+  StreamController<void>.broadcast();
 
-  StreamController isUserLoggedInSuccessfullyStreamController =
-      StreamController<bool>();
+  StreamController isUserLoggedInSuccessfullyStreamController = StreamController<
+      bool>();
+
   var loginObject = LoginObject("", "");
-  final LoginUseCase _loginUseCase;
+
+  LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
-
-  // LoginViewModel();
 
   // inputs
   @override
   void dispose() {
-    super.dispose();
     _userNameStreamController.close();
+    _isAllInputsValidStreamController.close();
     _passwordStreamController.close();
-    _areAllInputsValidStreamController.close();
     isUserLoggedInSuccessfullyStreamController.close();
   }
 
   @override
   void start() {
-    // view model should tell the view to show content state
+    // view tells state renderer, please show the content of the screen
     inputState.add(ContentState());
   }
 
@@ -47,60 +47,69 @@ class LoginViewModel extends BaseViewModel
   Sink get inputPassword => _passwordStreamController.sink;
 
   @override
-  Sink get inputUsername => _userNameStreamController.sink;
+  Sink get inputUserName => _userNameStreamController.sink;
 
   @override
-  Sink get inputAreAllInputsValid => _areAllInputsValidStreamController.sink;
-
-  @override
-  setPassword(String password) {
-    inputPassword.add(password);
-    loginObject = loginObject.copyWith(password: password);
-    inputAreAllInputsValid.add(null);
-  }
-
-  @override
-  setUserName(String userName) {
-    inputUsername.add(userName);
-    loginObject = loginObject.copyWith(userName: userName);
-    inputAreAllInputsValid.add(null);
-  }
+  Sink get inputIsAllInputValid => _isAllInputsValidStreamController.sink;
 
   @override
   login() async {
     inputState.add(
-        LoadingState(stateRendererType: StateRendererType.popupLoadingState));
+        LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
     (await _loginUseCase.execute(
-            LoginUseCaseInput(loginObject.userName, loginObject.password)))
+        LoginUseCaseInput(loginObject.userName, loginObject.password)))
         .fold(
-            (failure) => {
-                  // left -> Failure
-                  inputState.add(ErrorState(
-                      StateRendererType.popupErrorState, failure.message))
-                  // print(failure.message)
-                }, (data) {
-      // right -> data(success)
-      // print(data.customer?.name)
-      // content
-      inputState.add(ContentState());
-      // navigate to main screen
-      isUserLoggedInSuccessfullyStreamController.add(true);
-    });
+            (failure) =>
+        {
+          // left -> failure
+          inputState.add(ErrorState(
+              StateRendererType.POPUP_ERROR_STATE, failure.message))
+        },
+            (data) {
+          // right -> success (data)
+          inputState.add(ContentState());
+
+          // navigate to main screen after the login
+          isUserLoggedInSuccessfullyStreamController.add(true);
+        });
+  }
+
+  @override
+  setPassword(String password) {
+    inputPassword.add(password);
+    loginObject = loginObject.copyWith(
+        password: password); // data class operation same as kotlin
+    _validate();
+  }
+
+  @override
+  setUserName(String userName) {
+    inputUserName.add(userName);
+    loginObject = loginObject.copyWith(
+        userName: userName); // data class operation same as kotlin
+    _validate();
   }
 
   // outputs
   @override
-  Stream<bool> get outIsPasswordValid => _passwordStreamController.stream
-      .map((password) => _isPasswordValid(password));
+  Stream<bool> get outputIsPasswordValid =>
+      _passwordStreamController.stream
+          .map((password) => _isPasswordValid(password));
 
   @override
-  Stream<bool> get outIsUserNameValid => _userNameStreamController.stream
-      .map((userName) => _isUserNameValid(userName));
+  Stream<bool> get outputIsUserNameValid =>
+      _userNameStreamController.stream
+          .map((userName) => _isUserNameValid(userName));
 
   @override
-  Stream<bool> get outAreAllInputsValid =>
-      _areAllInputsValidStreamController.stream
-          .map((_) => _areAllInputsValid());
+  Stream<bool> get outputIsAllInputsValid =>
+      _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
+
+  // private functions
+
+  _validate() {
+    inputIsAllInputValid.add(null);
+  }
 
   bool _isPasswordValid(String password) {
     return password.isNotEmpty;
@@ -110,30 +119,32 @@ class LoginViewModel extends BaseViewModel
     return userName.isNotEmpty;
   }
 
-  bool _areAllInputsValid() {
+  bool _isAllInputsValid() {
     return _isPasswordValid(loginObject.password) &&
         _isUserNameValid(loginObject.userName);
   }
 }
 
 abstract class LoginViewModelInputs {
+  // three functions for actions
   setUserName(String userName);
 
   setPassword(String password);
 
   login();
 
-  Sink get inputUsername;
+// two sinks for streams
+  Sink get inputUserName;
 
   Sink get inputPassword;
 
-  Sink get inputAreAllInputsValid;
+  Sink get inputIsAllInputValid;
 }
 
 abstract class LoginViewModelOutputs {
-  Stream<bool> get outIsUserNameValid;
+  Stream<bool> get outputIsUserNameValid;
 
-  Stream<bool> get outIsPasswordValid;
+  Stream<bool> get outputIsPasswordValid;
 
-  Stream<void> get outAreAllInputsValid;
+  Stream<bool> get outputIsAllInputsValid;
 }

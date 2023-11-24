@@ -19,41 +19,31 @@ class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
+  LoginViewModel _viewModel = instance<LoginViewModel>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
 
-  // instead of the below we will do di
-  // RemoteDataSource _remoteDataSource = RemoteDataSourceImp(_appServiceClient);
-  // Repository _repository = RepositoryImpl(_remoteDataSource, _networkInfo);
-  // LoginUseCase _loginUseCase = LoginUseCase(_repository);
-  // final LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-   // get the dependencies form the instance
-  final LoginViewModel _viewModel = instance<LoginViewModel>();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final _fromKey = GlobalKey<FormState>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   _bind() {
-    // starting the view model
     _viewModel.start();
-    // listen to the user input in login edit text
-    // update the view mode with the user name and password
     _userNameController
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
         .addListener(() => _viewModel.setPassword(_passwordController.text));
-    _viewModel.isUserLoggedInSuccessfullyStreamController.stream.listen((isLoggedIn) {
-          if(isLoggedIn){
-            // navigate to main screen
-            SchedulerBinding.instance?.addPostFrameCallback((_) {
-              _appPreferences.setUserLogIn();
-              Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
 
-            });
-          }
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isSuccessLoggedIn) {
+      // navigate to main screen
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        _appPreferences.setUserLogIn();
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
     });
   }
 
@@ -69,10 +59,12 @@ class _LoginViewState extends State<LoginView> {
       backgroundColor: ColorManager.white,
       body: StreamBuilder<FlowState>(
         stream: _viewModel.outputState,
-        builder: (context, snapshot){
-          return snapshot.data?.getScreenWidget(context,_getContentWidget(),(){
-             _viewModel.login();
-          }) ?? _getContentWidget();
+        builder: (context, snapshot) {
+          return snapshot.data?.getScreenWidget(context, _getContentWidget(),
+                  () {
+                _viewModel.login();
+              }) ??
+              _getContentWidget();
         },
       ),
     );
@@ -80,116 +72,109 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _getContentWidget() {
     return Container(
-      padding: const EdgeInsets.only(top: AppPadding.p100),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _fromKey,
-          child: Column(
-            children: [
-              const Center(
-                  child: Image(image: AssetImage(ImageAssets.splashLogo))),
-              const SizedBox(
-                height: AppSize.s28,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
-                child: StreamBuilder<bool>(
-                    stream: _viewModel.outIsUserNameValid,
+        padding: EdgeInsets.only(top: AppPadding.p100),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Image(image: AssetImage(ImageAssets.splashLogo)),
+                SizedBox(height: AppSize.s28),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: AppPadding.p28, right: AppPadding.p28),
+                  child: StreamBuilder<bool>(
+                    stream: _viewModel.outputIsUserNameValid,
                     builder: (context, snapshot) {
                       return TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         controller: _userNameController,
                         decoration: InputDecoration(
-                          hintText: AppStrings.username,
-                          labelText: AppStrings.username,
-                          errorText: (snapshot.data ?? true)? null: AppStrings.usernameError,
-                        ),
+                            hintText: AppStrings.username,
+                            labelText: AppStrings.username,
+                            errorText: (snapshot.data ?? true)
+                                ? null
+                                : AppStrings.usernameError),
                       );
-                    }),
-              ),
-              const SizedBox(
-                height: AppSize.s28,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
-                child: StreamBuilder<bool>(
-                    stream: _viewModel.outIsPasswordValid,
+                    },
+                  ),
+                ),
+                SizedBox(height: AppSize.s28),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: AppPadding.p28, right: AppPadding.p28),
+                  child: StreamBuilder<bool>(
+                    stream: _viewModel.outputIsPasswordValid,
                     builder: (context, snapshot) {
                       return TextFormField(
                         keyboardType: TextInputType.visiblePassword,
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          hintText: AppStrings.password,
-                          labelText: AppStrings.password,
-                          errorText: (snapshot.data ?? true)? null: AppStrings.passwordError,
-                        ),
+                            hintText: AppStrings.password,
+                            labelText: AppStrings.password,
+                            errorText: (snapshot.data ?? true)
+                                ? null
+                                : AppStrings.passwordError),
                       );
-                    }),
-              ),
-              const SizedBox(
-                height: AppSize.s28,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
-                child: StreamBuilder<bool>(
-                    stream: _viewModel.outAreAllInputsValid,
-                    builder: (context, snapshot) {
-                      return SizedBox(
-                        width: double.infinity,
-                        height: AppSize.s40,
-                        child: ElevatedButton(onPressed:
-
-                            (snapshot.data ?? false )
-                            ? (){
-                          _viewModel.login();
-                        } : null
-                        , child: const Text(AppStrings.login)),
-                      );
-                    }),
-              ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: AppPadding.p8,
-                left: AppPadding.p28, right: AppPadding.p12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.forgotPasswordRoute);
-                  },
-                  child: Text(
-                    AppStrings.forgetPassword,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    },
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.registerRoute);
-                  },
-                  child: Text(
-                    AppStrings.notMember,
-                    style: Theme.of(context).textTheme.titleMedium,
+                SizedBox(height: AppSize.s28),
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: AppPadding.p28, right: AppPadding.p28),
+                    child: StreamBuilder<bool>(
+                      stream: _viewModel.outputIsAllInputsValid,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: AppSize.s40,
+                          child: ElevatedButton(
+                              onPressed: (snapshot.data ?? false)
+                                  ? () {
+                                      _viewModel.login();
+                                    }
+                                  : null,
+                              child: Text(AppStrings.login)),
+                        );
+                      },
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: AppPadding.p8,
+                    left: AppPadding.p28,
+                    right: AppPadding.p28,
                   ),
-                ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, Routes.forgotPasswordRoute);
+                        },
+                        child: Text(AppStrings.forgetPassword,
+                            style: Theme.of(context).textTheme.displayLarge),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.mainRoute);
+                        },
+                        child: Text(AppStrings.register,
+                            style: Theme.of(context).textTheme.displayLarge),
+                      )
+                    ],
+                  ),
+                )
               ],
-            )),
-
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   @override
   void dispose() {
-    super.dispose();
     _viewModel.dispose();
+    super.dispose();
   }
 }
