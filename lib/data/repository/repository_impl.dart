@@ -18,7 +18,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, Authentication>> login(
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
-      try{
+      try {
 // check if it's connected to internet, it's safe to call the API
         final response = await _remoteDataSource.login(loginRequest);
 
@@ -30,14 +30,13 @@ class RepositoryImpl implements Repository {
         } else {
           // failure - return error
           // return either left
-          return left(Failure(ApiInternalStatus.FAILURE, response.message ?? ResponseMessage.DEFAULT));
+          return left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
         }
-
-      }catch(error){
+      } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
       }
-
-          } else {
+    } else {
       // return internet connection error
       return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
@@ -45,34 +44,35 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, String>> forgetPassword(String email) async {
-    if(await _networkInfo.isConnected){
-     try{
-         final response  = await _remoteDataSource.forgetPassword(email);
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _remoteDataSource.forgetPassword(email);
 
-         if(response.status == ApiInternalStatus.SUCCESS){
-           // success
-           // return right
-           return Right(response.toDomain());
-         }else {
-           // failure
-           // return left
-           return Left(Failure(response.status ?? ResponseCode.DEFAULT,
-            response.message ?? ResponseMessage.DEFAULT));
-         }
-     }catch(error){
-       return Left(ErrorHandler.handle(error).failure);
-     }
-    }else {
-          // return network connection erorr
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // return right
+          return Right(response.toDomain());
+        } else {
+          // failure
+          // return left
+          return Left(Failure(response.status ?? ResponseCode.DEFAULT,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return network connection erorr
       // return left
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Authentication>> registerUser(RegisterRequest registerRequest)  async{
+  Future<Either<Failure, Authentication>> registerUser(
+      RegisterRequest registerRequest) async {
     if (await _networkInfo.isConnected) {
-      try{
+      try {
 // check if it's connected to internet, it's safe to call the API
         final response = await _remoteDataSource.registerUser(registerRequest);
 
@@ -84,17 +84,42 @@ class RepositoryImpl implements Repository {
         } else {
           // failure - return error
           // return either left
-          return left(Failure(ApiInternalStatus.FAILURE, response.message ?? ResponseMessage.DEFAULT));
+          return left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
         }
-
-      }catch(error){
+      } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
       }
-
     } else {
       // return internet connection error
       return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
 
+  @override
+  Future<Either<Failure, HomeObject>> getHomeData() async {
+    if (await _networkInfo.isConnected) {
+      try {
+        // check if it's connected to internet, it's safe to call the API
+        final response = await _remoteDataSource.getHomeData();
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          return Right(response.toDomain());
+        } else {
+          // failure - return error
+          // return either left
+          return left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
 }

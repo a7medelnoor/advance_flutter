@@ -43,4 +43,7 @@ class AppStrings {
   static String notificationScreenTitle= "Notification";
   static String searchScreenTitle= "Search";
   static String settingsScreenTitle= "Settings";
+  static String services = "Services";
+  static String stores = "Stores";
+  static String banners = "Banners";
 }
