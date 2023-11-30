@@ -74,7 +74,7 @@ class HomeData {
 }
 
 class HomeObject {
-  HomeData? data;
+  HomeData data;
 
   HomeObject(this.data);
 }

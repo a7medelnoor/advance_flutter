@@ -62,10 +62,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getStore() {
-    return StreamBuilder<List<Store>>(
-        stream: _viewModel.outputStores,
+    return StreamBuilder<HomeViewObject>(
+        stream: _viewModel.outputHomeData,
         builder: (context, snapshot) {
-          return _getStoresWidget(snapshot.data);
+          return _getStoresWidget(snapshot.data?.stores);
         });
   }
 
@@ -119,10 +119,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getServices() {
-    return StreamBuilder<List<Service>>(
-        stream: _viewModel.outputServices,
+    return StreamBuilder<HomeViewObject>(
+        stream: _viewModel.outputHomeData,
         builder: (context, snapshot) {
-          return _getServicesWidget(snapshot.data);
+          return _getServicesWidget(snapshot.data?.services);
         });
   }
 
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
         padding:
             const EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
         child: Container(
-          height: AppSize.s140,
+          height: AppSize.s160,
           margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
           child: ListView(
             scrollDirection: Axis.horizontal,
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                             child: Image.network(
                               service.image,
                               fit: BoxFit.cover,
-                              width: AppSize.s100,
+                              width: AppSize.s120,
                               height: AppSize.s100,
                             ),
                           ),
@@ -178,10 +178,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getBannersCarousel() {
-    return StreamBuilder<List<BannerAd>>(
-        stream: _viewModel.outputBanners,
+    return StreamBuilder<HomeViewObject>(
+        stream: _viewModel.outputHomeData,
         builder: (context, snapshot) {
-          return _getBannerWidget(snapshot.data);
+          return _getBannerWidget(snapshot.data?.banners);
         });
   }
 
@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                   ))
               .toList(),
           options: CarouselOptions(
-              height: AppSize.s90,
+              height: AppSize.s190,
               autoPlay: true,
               enableInfiniteScroll: true,
               enlargeCenterPage: true));
