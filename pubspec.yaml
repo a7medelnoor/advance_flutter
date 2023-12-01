@@ -90,7 +90,7 @@ flutter:
      - assets/images/left_arrow_ic.svg
      - assets/images/right_arrow_ic.svg
      - assets/json/loading.json
-     - assets/json/nodata.json
+     - assets/json/empty.json
      - assets/json/error.json
      - assets/json/success.json
      - assets/images/photo_camera_ic.svg

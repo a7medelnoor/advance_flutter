@@ -1,7 +1,3 @@
-import 'package:advance_flutter/data/data_source/remote_data_source.dart';
-import 'package:advance_flutter/data/repository/repository_impl.dart';
-import 'package:advance_flutter/domain/repository/repository.dart';
-import 'package:advance_flutter/domain/usecase/login_use_case.dart';
 import 'package:advance_flutter/presentation/common/state_rander/state_randerer_impl.dart';
 import 'package:advance_flutter/presentation/login/viewmodel/login_viewmodel.dart';
 import 'package:advance_flutter/presentation/resources/assests_manager.dart';
@@ -14,6 +10,7 @@ import 'package:flutter/scheduler.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
+
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -132,8 +129,8 @@ class _LoginViewState extends State<LoginView> {
                           child: ElevatedButton(
                               onPressed: (snapshot.data ?? false)
                                   ? () {
-                                      _viewModel.login();
-                                    }
+                                _viewModel.login();
+                              }
                                   : null,
                               child: Text(AppStrings.login)),
                         );
@@ -154,14 +151,15 @@ class _LoginViewState extends State<LoginView> {
                               context, Routes.forgotPasswordRoute);
                         },
                         child: Text(AppStrings.forgetPassword,
-                            style: Theme.of(context).textTheme.displayLarge),
+                            style: Theme.of(context).textTheme.subtitle2),
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, Routes.mainRoute);
+                          Navigator.pushNamed(
+                              context, Routes.registerRoute);
                         },
                         child: Text(AppStrings.register,
-                            style: Theme.of(context).textTheme.displayLarge),
+                            style: Theme.of(context).textTheme.subtitle2),
                       )
                     ],
                   ),

@@ -3,7 +3,6 @@ import 'package:advance_flutter/presentation/common/state_rander/state_randerer.
 import 'package:advance_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 abstract class FlowState {
   StateRendererType getStateRendererType();
 
@@ -46,7 +45,7 @@ class ContentState extends FlowState {
   ContentState();
 
   @override
-  String getMessage() => Constants.empty;
+  String getMessage() => "";
 
   @override
   StateRendererType getStateRendererType() =>
@@ -156,7 +155,7 @@ extension FlowStateExtension on FlowState {
       ModalRoute.of(context)?.isCurrent != true;
 
   showPopUp(BuildContext context, StateRendererType stateRendererType,
-      String message,{String title = "EMPTY"}) {
+      String message,{String title = ""}) {
     WidgetsBinding.instance?.addPostFrameCallback((_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(

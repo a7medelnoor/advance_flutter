@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../resources/font_manager.dart';
+import 'package:advance_flutter/app/constants.dart';
+
 enum StateRendererType {
   // POPUP STATES
   POPUP_LOADING_STATE,
@@ -33,7 +35,7 @@ class StateRenderer extends StatelessWidget {
         String? title,
         required this.retryActionFunction})
       : message = message ?? AppStrings.loading,
-        title = title ?? "EMPTY",
+        title = title ?? "",
         super(key: key);
 
   @override
@@ -72,7 +74,7 @@ class StateRenderer extends StatelessWidget {
         return Container();
       case StateRendererType.EMPTY_SCREEN_STATE:
         return _getItemsInColumn(
-            [_getAnimatedImage(JsonAssets.error), _getMessage(message)]);
+            [_getAnimatedImage(JsonAssets.empty), _getMessage(message)]);
       default:
         return Container();
     }

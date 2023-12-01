@@ -8,7 +8,6 @@ import 'package:advance_flutter/presentation/common/state_rander/state_randerer_
 import '../../common/freezed_data_classes.dart';
 import '../../common/state_rander/state_randerer.dart';
 
-
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
   StreamController _userNameStreamController =

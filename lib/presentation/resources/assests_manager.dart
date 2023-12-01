@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const String imagePath = "assets/images";
-const String jsonPath = "assets/json";
+const String JSON_PATH = "assets/json";
 class ImageAssets {
   static const String splashLogo = "$imagePath/splash_logo.png";
   static const String onboardingImage1 = "$imagePath/onboarding_logo1.svg";
@@ -19,8 +19,8 @@ class ImageAssets {
 }
 
 class JsonAssets {
-  static const String loading = "$jsonPath/loading.json";
-  static const String nodata = "$jsonPath/nodata.json";
-  static const String error = "$jsonPath/error.json";
-  static const String success = "$jsonPath/loading.json";
+  static const String loading = "$JSON_PATH/loading.json";
+  static const String error = "$JSON_PATH/error.json";
+  static const String empty = "$JSON_PATH/empty.json";
+  static const String success = "$JSON_PATH/success.json";
 }
