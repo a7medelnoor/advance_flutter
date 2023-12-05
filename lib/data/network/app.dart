@@ -10,8 +10,6 @@ abstract class AppServiceClient {
   factory AppServiceClient(Dio dio, {String baseUrl}) = _AppServiceClient;
 
   @POST("/customers/login")
-  @Header("content-type: application/json")
-  @Header("accept: application/json")
   Future<AuthenticationResponse> login(
       @Field("email") String email, @Field("password") String password);
 
@@ -32,5 +30,5 @@ abstract class AppServiceClient {
   Future<HomeResponse> getHomeData();
 
   @GET("/storeDetails/1")
-  Future<AuthenticationResponse> getStoreDetailsData();
+  Future<StoreDataResponse> getStoreDetailsData();
 }

@@ -9,5 +9,5 @@ abstract class Repository {
    Future<Either<Failure, String>> forgetPassword(String email);
    Future<Either<Failure, Authentication>> registerUser(RegisterRequest registerRequest);
    Future<Either<Failure, HomeObject>> getHomeData();
-   Future<Either<Failure, HomeObject>> getStoreDetailsData();
+   // Future<Either<Failure, StoreDetails>> getStoreDetailsData();
 }

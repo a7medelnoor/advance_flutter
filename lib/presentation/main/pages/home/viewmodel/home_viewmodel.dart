@@ -11,7 +11,7 @@ import '../../../../common/state_rander/state_randerer_impl.dart';
 
 class HomeViewModel extends BaseViewModel
     with HomeViewModelInput, HomeViewModelOutPut {
-  final StreamController _homeViewStreamController =
+  final  _homeViewStreamController =
       BehaviorSubject<HomeViewObject>();
 
   final HomeUseCase _homeUseCase;
@@ -24,7 +24,7 @@ class HomeViewModel extends BaseViewModel
     _getHomeData();
   }
 
-  void _getHomeData() async {
+   _getHomeData() async {
     inputState.add(LoadingState(
         stateRendererType: StateRendererType.FULL_SCREEN_LOADING_STATE));
     (await _homeUseCase.execute(Void)).fold(

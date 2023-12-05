@@ -39,16 +39,20 @@ class ContactsResponse {
   Map<String, dynamic> toJson() => _$ContactsResponseToJson(this);
 }
 @JsonSerializable()
-class AuthenticationResponse extends BaseResponse{
+class AuthenticationResponse extends BaseResponse {
   @JsonKey(name: "customer")
   CustomerResponse? customer;
   @JsonKey(name: "contacts")
   ContactsResponse? contacts;
+
   AuthenticationResponse(this.customer, this.contacts);
-  // From json
-   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) => _$AuthenticationResponseFromJson(json);
-  // To json
-   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
+
+// from json
+  factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticationResponseFromJson(json);
+
+// to json
+  Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -195,4 +199,11 @@ class StoreDataResponse {
   @JsonKey(name: 'about')
   String about;
   StoreDataResponse(this.status, this.message, this.image, this.id, this.details, this.services, this.about);
+
+  // to json
+  Map<String, dynamic> toJson() => _$StoreDataResponseToJson(this);
+
+  // from json
+  factory StoreDataResponse.fromJson(Map<String, dynamic> json) =>
+      _$StoreDataResponseFromJson(json);
 }

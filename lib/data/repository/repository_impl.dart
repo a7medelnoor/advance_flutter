@@ -24,7 +24,9 @@ class RepositoryImpl implements Repository {
       try {
 // check if it's connected to internet, it's safe to call the API
         final response = await _remoteDataSource.login(loginRequest);
-
+          print("ghhhhhhhhhhhhh"+response.contacts.toString());
+          print(response.customer);
+          print(response.status);
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // return either right
@@ -105,6 +107,8 @@ class RepositoryImpl implements Repository {
     try {
       // get response from cache
       final response = await _localDataSource.getHomeData();
+      print("Response ssssssssssssssssssssssssssss"+response.data.toString());
+
       return Right(response.toDomain());
     } catch (cacheError) {
       // cache is not existing  or caching is not valid
@@ -113,7 +117,7 @@ class RepositoryImpl implements Repository {
         try {
           // check if it's connected to internet, it's safe to call the API
           final response = await _remoteDataSource.getHomeData();
-
+              print("Response"+response.data.toString());
           if (response.status == ApiInternalStatus.SUCCESS) {
             // success
             // return either right
@@ -137,4 +141,9 @@ class RepositoryImpl implements Repository {
       }
     }
   }
+
+  // @override
+  // Future<Either<Failure, StoreDetails>> getStoreDetailsData() {
+  // //
+  // }
 }

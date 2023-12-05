@@ -13,7 +13,7 @@ class _AppServiceClient implements AppServiceClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://a7medelnoor.wiremockapi.cloud/';
+    baseUrl ??= 'http://a7medelnoor.wiremockapi.cloud';
   }
 
   final Dio _dio;
@@ -149,13 +149,13 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<AuthenticationResponse> getStoreDetailsData() async {
+  Future<StoreDataResponse> getStoreDetailsData() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AuthenticationResponse>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<StoreDataResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -171,7 +171,7 @@ class _AppServiceClient implements AppServiceClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = AuthenticationResponse.fromJson(_result.data!);
+    final value = StoreDataResponse.fromJson(_result.data!);
     return value;
   }
 

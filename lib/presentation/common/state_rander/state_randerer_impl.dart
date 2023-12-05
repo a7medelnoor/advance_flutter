@@ -45,7 +45,7 @@ class ContentState extends FlowState {
   ContentState();
 
   @override
-  String getMessage() => "";
+  String getMessage() => Constants.empty;
 
   @override
   StateRendererType getStateRendererType() =>
@@ -155,7 +155,7 @@ extension FlowStateExtension on FlowState {
       ModalRoute.of(context)?.isCurrent != true;
 
   showPopUp(BuildContext context, StateRendererType stateRendererType,
-      String message,{String title = ""}) {
+      String message,{String title = Constants.empty}) {
     WidgetsBinding.instance?.addPostFrameCallback((_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(
