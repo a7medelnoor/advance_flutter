@@ -32,7 +32,14 @@ Failure? _handlerError(DioError error) {
       return DataSource.CANCLE.getFailure();
     case DioErrorType.unknown:
       return DataSource.DEFAULT.getFailure();
+    case DioExceptionType.badCertificate:
+      // TODO: Handle this case.
+      break;
+    case DioExceptionType.connectionError:
+      // TODO: Handle this case.
+      break;
   }
+  return null;
 }
 
 enum DataSource {

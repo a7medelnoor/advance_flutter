@@ -50,14 +50,24 @@ extension StoreResponseMapper on StoreResponse? {
         this?.image.orEmpty() ?? Constants.empty);
   }
 }
-
+extension StoreDetailsResponseMapper on StoreDataResponse? {
+  StoreDetailsModel toDomain() {
+    return StoreDetailsModel(
+        this?.id.orZero() ?? Constants.zero,
+        this?.title.orEmpty() ?? Constants.empty,
+        this?.image.orEmpty() ?? Constants.empty,
+        this?.details.orEmpty() ?? Constants.empty,
+        this?.services.orEmpty() ?? Constants.empty,
+        this?.about.orEmpty() ?? Constants.empty);
+  }
+}
 extension BannerAdResponseMapper on BannersResponse? {
   BannerAd toDomain() {
     return BannerAd(
         this?.id.orZero() ?? Constants.zero,
+        this?.link.orEmpty() ?? Constants.empty,
         this?.title.orEmpty() ?? Constants.empty,
-        this?.image.orEmpty() ?? Constants.empty,
-        this?.link.orEmpty() ?? Constants.empty);
+        this?.image.orEmpty() ?? Constants.empty);
   }
 }
 extension HomeResponseMapper on HomeResponse? {

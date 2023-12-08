@@ -29,9 +29,13 @@ class HomeViewModel extends BaseViewModel
         stateRendererType: StateRendererType.FULL_SCREEN_LOADING_STATE));
     (await _homeUseCase.execute(Void)).fold(
         (failure) => {
+          print("Hommmmmmmmmmmmme message"+failure.message),
+          print("Hommmmmmmmmmmmme code "+failure.code.toString()),
+          print("Hommmmmmmmmmmmme failur"+failure.toString()),
               // left -> failure
               inputState.add(ErrorState(
-                  StateRendererType.FULL_SCREEN_ERROR_STATE, failure.message))
+                  StateRendererType.FULL_SCREEN_ERROR_STATE, failure.message)),
+
             }, (homeObject) {
       // right -> success (data)
       inputState.add(ContentState());

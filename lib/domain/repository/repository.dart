@@ -1,6 +1,7 @@
 
 import 'package:advance_flutter/data/network/failure.dart';
 import 'package:advance_flutter/data/request/requests.dart';
+import '../../data/response/responses.dart';
 import '../model/model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -9,5 +10,5 @@ abstract class Repository {
    Future<Either<Failure, String>> forgetPassword(String email);
    Future<Either<Failure, Authentication>> registerUser(RegisterRequest registerRequest);
    Future<Either<Failure, HomeObject>> getHomeData();
-   // Future<Either<Failure, StoreDetails>> getStoreDetailsData();
+   Future<Either<Failure, StoreDataResponse>> getStoreDetailsData();
 }

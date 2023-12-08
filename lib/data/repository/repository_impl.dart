@@ -1,3 +1,4 @@
+
 import 'package:advance_flutter/data/data_source/local_data_source.dart';
 import 'package:advance_flutter/data/data_source/remote_data_source.dart';
 import 'package:advance_flutter/data/mapper/mapper.dart';
@@ -5,6 +6,7 @@ import 'package:advance_flutter/data/network/failure.dart';
 import 'package:advance_flutter/data/network/network_handler.dart';
 import 'package:advance_flutter/data/network/network_info.dart';
 import 'package:advance_flutter/data/request/requests.dart';
+import 'package:advance_flutter/data/response/responses.dart';
 import 'package:advance_flutter/domain/model/model.dart';
 import 'package:advance_flutter/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
@@ -104,6 +106,9 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, HomeObject>> getHomeData() async {
+    final response = await _remoteDataSource.getHomeData();
+    print("Hommmm"+response.data.toString());
+
     try {
       // get response from cache
       final response = await _localDataSource.getHomeData();
@@ -142,8 +147,32 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, StoreDetails>> getStoreDetailsData() {
-  // //
-  // }
+  @override
+  Future<Either<Failure, StoreDataResponse>> getStoreDetailsData() async {
+    try{
+      final response  = await _localDataSource.getStoreDetails();
+      return Right(response.toDomain() as StoreDataResponse);
+    }catch(catchError){
+      if(await _networkInfo.isConnected){
+        try{
+          final response = await _remoteDataSource.getStoreDetails();
+          if(response.status == ApiInternalStatus.SUCCESS){
+            _localDataSource.saveStoreDetailsToCache(response);
+            return Right(response.toDomain() as StoreDataResponse);
+          }else  {
+            return Left(Failure(response.status ?? ResponseCode.DEFAULT, response.message ?? ResponseMessage.DEFAULT));
+          }
+        }catch(error){
+          return Left(ErrorHandler.handle(error).failure);
+        }
+      }else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    }
+  }
+
+
+
+
+
 }

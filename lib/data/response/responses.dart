@@ -105,13 +105,14 @@ class ServiceResponse{
 class BannersResponse{
   @JsonKey(name: 'id')
   int? id;
+  @JsonKey(name: 'link')
+  String? link;
   @JsonKey(name: 'title')
   String? title;
   @JsonKey(name: 'image')
   String? image;
-  @JsonKey(name: 'link')
-  String? link;
-  BannersResponse(this.id, this.title, this.image, this.link);
+
+  BannersResponse(this.id, this.link, this.title, this.image);
   // to json
   Map<String, dynamic> toJson() => _$BannersResponseToJson(this);
 
@@ -183,22 +184,20 @@ class StoreDetails extends BaseResponse{
       _$StoreDetailsFromJson(json);
 }
 @JsonSerializable()
-class StoreDataResponse {
-  @JsonKey(name: 'status')
-  String status;
-  @JsonKey(name: 'message')
-  String message;
+class StoreDataResponse extends BaseResponse{
+  @JsonKey(name: 'id')
+  int id;
+  @JsonKey(name: 'title')
+  String title;
   @JsonKey(name: 'image')
   String image;
-  @JsonKey(name: 'id')
-  String id;
   @JsonKey(name: 'details')
   String details;
   @JsonKey(name: 'services')
   String services;
   @JsonKey(name: 'about')
   String about;
-  StoreDataResponse(this.status, this.message, this.image, this.id, this.details, this.services, this.about);
+  StoreDataResponse(this.id, this.title,this.image,  this.details, this.services, this.about);
 
   // to json
   Map<String, dynamic> toJson() => _$StoreDataResponseToJson(this);

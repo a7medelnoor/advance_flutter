@@ -9,9 +9,11 @@ import 'package:advance_flutter/domain/repository/repository.dart';
 import 'package:advance_flutter/domain/usecase/home_use_case.dart';
 import 'package:advance_flutter/domain/usecase/login_use_case.dart';
 import 'package:advance_flutter/domain/usecase/register_use_case.dart';
+import 'package:advance_flutter/domain/usecase/store_details_usecase.dart';
 import 'package:advance_flutter/presentation/login/viewmodel/login_viewmodel.dart';
 import 'package:advance_flutter/presentation/main/pages/home/viewmodel/home_viewmodel.dart';
 import 'package:advance_flutter/presentation/register/viewmodel/register_view_model.dart';
+import 'package:advance_flutter/presentation/store_details/store_details_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -99,11 +101,11 @@ initHomeModule() {
 
 
 initStoreDetailsModule() {
-  if (!GetIt.I.isRegistered<HomeUseCase>()) {
-    instance.registerFactory<HomeUseCase>(
-            () => HomeUseCase(instance()));
-    instance.registerFactory<HomeViewModel>(
-            () => HomeViewModel(instance()));
+  if (!GetIt.I.isRegistered<StoreDetailsUseCase>()) {
+    instance.registerFactory<StoreDetailsUseCase>(
+            () => StoreDetailsUseCase(instance()));
+    instance.registerFactory<StoreDetailsViewModel>(
+            () => StoreDetailsViewModel(instance()));
 
   }
 }

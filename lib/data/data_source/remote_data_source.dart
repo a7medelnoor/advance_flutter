@@ -2,6 +2,8 @@ import 'package:advance_flutter/data/network/app.dart';
 import 'package:advance_flutter/data/request/requests.dart';
 import 'package:advance_flutter/data/response/responses.dart';
 
+import '../../domain/model/model.dart';
+
 abstract class RemoteDataSource {
   Future<AuthenticationResponse> login(LoginRequest loginRequest);
   Future<AuthenticationResponse> registerUser(RegisterRequest registerRequest);

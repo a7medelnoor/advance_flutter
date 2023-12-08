@@ -27,6 +27,7 @@ abstract class AppServiceClient {
   );
 
   @GET("/home")
+  @Header("Content-Type: application/json")
   Future<HomeResponse> getHomeData();
 
   @GET("/storeDetails/1")

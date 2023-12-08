@@ -6,8 +6,10 @@ import 'package:advance_flutter/domain/usecase/base_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../model/model.dart';
+import 'dart:ffi';
+import 'dart:ffi';
 
-class HomeUseCase implements BaseUseCase<Void, HomeObject> {
+class HomeUseCase implements BaseUseCase<void, HomeObject> {
   final Repository _repository;
 
   HomeUseCase(this._repository);
