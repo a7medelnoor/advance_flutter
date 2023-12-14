@@ -46,6 +46,9 @@ class AppStrings {
   static String services = "Services";
   static String stores = "Stores";
   static String banners = "Banners";
+  static String details = "Details";
+  static String about = "About";
+  static String storeDetails = "Store Details";
 
 
 }

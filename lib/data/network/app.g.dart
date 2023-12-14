@@ -13,7 +13,7 @@ class _AppServiceClient implements AppServiceClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://127.0.0.1:3000';
+    baseUrl ??= 'https://ahmeddev.wiremockapi.cloud';
   }
 
   final Dio _dio;
@@ -54,13 +54,13 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<ForgetPasswordResponse> forgetPassword(String email) async {
+  Future<ForgotPasswordResponse> forgetPassword(String email) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'email': email};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ForgetPasswordResponse>(Options(
+        _setStreamType<ForgotPasswordResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -76,7 +76,7 @@ class _AppServiceClient implements AppServiceClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ForgetPasswordResponse.fromJson(_result.data!);
+    final value = ForgotPasswordResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -149,13 +149,13 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<StoreDataResponse> getStoreDetailsData() async {
+  Future<StoreDetailsResponse> getStoreDetailsData() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StoreDataResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<StoreDetailsResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -171,7 +171,7 @@ class _AppServiceClient implements AppServiceClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StoreDataResponse.fromJson(_result.data!);
+    final value = StoreDetailsResponse.fromJson(_result.data!);
     return value;
   }
 

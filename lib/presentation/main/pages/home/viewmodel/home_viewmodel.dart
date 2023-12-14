@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ffi';
 
 import 'package:advance_flutter/domain/model/model.dart';
@@ -10,60 +9,61 @@ import '../../../../common/state_rander/state_randerer.dart';
 import '../../../../common/state_rander/state_randerer_impl.dart';
 
 class HomeViewModel extends BaseViewModel
-    with HomeViewModelInput, HomeViewModelOutPut {
-  final  _homeViewStreamController =
-      BehaviorSubject<HomeViewObject>();
+    with HomeViewModelInputs, HomeViewModelOutputs {
+  HomeUseCase _homeUseCase;
 
-  final HomeUseCase _homeUseCase;
+  final _dataStreamController = BehaviorSubject<HomeViewObject>();
 
-  HomeViewModel(this._homeUseCase);
-
+  HomeViewModel(this._homeUseCase) {
+    _dataStreamController.add(HomeViewObject([], [], []));
+  }
   // inputs
   @override
-  void start() {
-    _getHomeData();
+  void start() async{
+    _getHome();
   }
 
-   _getHomeData() async {
+  _getHome() async {
     inputState.add(LoadingState(
         stateRendererType: StateRendererType.FULL_SCREEN_LOADING_STATE));
-    (await _homeUseCase.execute(Void)).fold(
-        (failure) => {
-          print("Hommmmmmmmmmmmme message"+failure.message),
-          print("Hommmmmmmmmmmmme code "+failure.code.toString()),
-          print("Hommmmmmmmmmmmme failur"+failure.toString()),
-              // left -> failure
-              inputState.add(ErrorState(
-                  StateRendererType.FULL_SCREEN_ERROR_STATE, failure.message)),
 
-            }, (homeObject) {
-      // right -> success (data)
-      inputState.add(ContentState());
-      inputHomeData.add(HomeViewObject(homeObject.data.stores,
-          homeObject.data.services, homeObject.data.banners));
-    });
+    (await _homeUseCase.execute(Void)).fold(
+          (failure) {
+        inputState.add(ErrorState(
+            StateRendererType.FULL_SCREEN_ERROR_STATE, failure.message));
+      },
+          (homeObject) {
+        // Handle success
+        inputState.add(ContentState());
+        inputHomeData.add(HomeViewObject(
+            homeObject.data.stores,
+            homeObject.data.services,
+            homeObject.data.banners));
+      },
+    );
+
   }
 
   @override
   void dispose() {
-    _homeViewStreamController.close();
+    _dataStreamController.close();
     super.dispose();
   }
 
   @override
-  Sink get inputHomeData => _homeViewStreamController.sink;
+  Sink get inputHomeData => _dataStreamController.sink;
 
   // outputs
   @override
   Stream<HomeViewObject> get outputHomeData =>
-      _homeViewStreamController.stream.map((data) => data);
+      _dataStreamController.stream.map((data) => data);
 }
 
-abstract class HomeViewModelInput {
+abstract class HomeViewModelInputs {
   Sink get inputHomeData;
 }
 
-abstract class HomeViewModelOutPut {
+abstract class HomeViewModelOutputs {
   Stream<HomeViewObject> get outputHomeData;
 }
 

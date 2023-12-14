@@ -1,4 +1,5 @@
 import 'package:advance_flutter/app/constants.dart';
+import 'package:advance_flutter/data/network/dio_factory.dart';
 import 'package:advance_flutter/data/response/responses.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
@@ -14,7 +15,7 @@ abstract class AppServiceClient {
       @Field("email") String email, @Field("password") String password);
 
   @POST("/customers/forgetPassword")
-  Future<ForgetPasswordResponse> forgetPassword(@Field("email") String email);
+  Future<ForgotPasswordResponse> forgetPassword(@Field("email") String email);
 
   @POST("/customers/register")
   Future<AuthenticationResponse> registerUser(
@@ -27,9 +28,8 @@ abstract class AppServiceClient {
   );
 
   @GET("/home")
-  @Header("Content-Type: application/json")
   Future<HomeResponse> getHomeData();
 
   @GET("/storeDetails/1")
-  Future<StoreDataResponse> getStoreDetailsData();
+  Future<StoreDetailsResponse> getStoreDetailsData();
 }

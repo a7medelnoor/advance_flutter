@@ -8,7 +8,7 @@ extension CustomerResponseMapper on CustomerResponse? {
     return Customer(
         this?.id.orEmpty() ?? Constants.empty,
         this?.name.orEmpty() ?? Constants.empty,
-        this?.numberOfNotifications.orZero() ?? Constants.zero);
+        this?.numOfNotifications.orZero() ?? Constants.zero);
   }
 }
 
@@ -27,7 +27,7 @@ extension AuthenticationResponseMapper on AuthenticationResponse? {
   }
 }
 
-extension ForgetPasswordResponseMapper on ForgetPasswordResponse? {
+extension ForgetPasswordResponseMapper on ForgotPasswordResponse? {
   String toDomain() {
     return this?.support?.orEmpty() ?? Constants.empty;
   }
@@ -50,7 +50,7 @@ extension StoreResponseMapper on StoreResponse? {
         this?.image.orEmpty() ?? Constants.empty);
   }
 }
-extension StoreDetailsResponseMapper on StoreDataResponse? {
+extension StoreDetailsResponseMapper on StoreDetailsResponse? {
   StoreDetailsModel toDomain() {
     return StoreDetailsModel(
         this?.id.orZero() ?? Constants.zero,
@@ -61,13 +61,13 @@ extension StoreDetailsResponseMapper on StoreDataResponse? {
         this?.about.orEmpty() ?? Constants.empty);
   }
 }
-extension BannerAdResponseMapper on BannersResponse? {
+extension BannerAdResponseMapper on BannerResponse? {
   BannerAd toDomain() {
     return BannerAd(
         this?.id.orZero() ?? Constants.zero,
-        this?.link.orEmpty() ?? Constants.empty,
         this?.title.orEmpty() ?? Constants.empty,
-        this?.image.orEmpty() ?? Constants.empty);
+        this?.image.orEmpty() ?? Constants.empty,
+      this?.link.orEmpty() ?? Constants.empty);
   }
 }
 extension HomeResponseMapper on HomeResponse? {
@@ -83,7 +83,7 @@ extension HomeResponseMapper on HomeResponse? {
 
     List<BannerAd> banners = (this
         ?.data
-        ?.services
+        ?.banners
         ?.map((bannerResponse) =>
         bannerResponse.toDomain()) ??
         const Iterable.empty())
@@ -93,7 +93,7 @@ extension HomeResponseMapper on HomeResponse? {
 
     List<Store> stores = (this
         ?.data
-        ?.services
+        ?.stores
         ?.map((storeResponse) =>
         storeResponse.toDomain()) ??
         const Iterable.empty())

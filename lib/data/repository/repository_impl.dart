@@ -105,60 +105,17 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, HomeObject>> getHomeData() async {
-    final response = await _remoteDataSource.getHomeData();
-    print("Hommmm"+response.data.toString());
-
-    try {
-      // get response from cache
-      final response = await _localDataSource.getHomeData();
-      print("Response ssssssssssssssssssssssssssss"+response.data.toString());
-
-      return Right(response.toDomain());
-    } catch (cacheError) {
-      // cache is not existing  or caching is not valid
-      // then  get from API
-      if (await _networkInfo.isConnected) {
-        try {
-          // check if it's connected to internet, it's safe to call the API
-          final response = await _remoteDataSource.getHomeData();
-              print("Response"+response.data.toString());
-          if (response.status == ApiInternalStatus.SUCCESS) {
-            // success
-            // return either right
-            // return data
-            // save response in cache  (local data source)
-            _localDataSource.saveHomeToCache(response);
-            return Right(response.toDomain());
-          } else {
-            // failure - return error
-            // return either left
-
-            return left(Failure(ApiInternalStatus.FAILURE,
-                response.message ?? ResponseMessage.DEFAULT));
-          }
-        } catch (error) {
-          return Left(ErrorHandler.handle(error).failure);
-        }
-      } else {
-        // return internet connection error
-        return left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-      }
-    }
-  }
-
-  @override
-  Future<Either<Failure, StoreDataResponse>> getStoreDetailsData() async {
+  Future<Either<Failure, StoreDetailsModel>> getStoreDetailsData() async {
     try{
       final response  = await _localDataSource.getStoreDetails();
-      return Right(response.toDomain() as StoreDataResponse);
+      return Right(response.toDomain());
     }catch(catchError){
       if(await _networkInfo.isConnected){
         try{
           final response = await _remoteDataSource.getStoreDetails();
           if(response.status == ApiInternalStatus.SUCCESS){
             _localDataSource.saveStoreDetailsToCache(response);
-            return Right(response.toDomain() as StoreDataResponse);
+            return Right(response.toDomain());
           }else  {
             return Left(Failure(response.status ?? ResponseCode.DEFAULT, response.message ?? ResponseMessage.DEFAULT));
           }
@@ -166,6 +123,48 @@ class RepositoryImpl implements Repository {
           return Left(ErrorHandler.handle(error).failure);
         }
       }else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, HomeObject>> getHomeData() async {
+    try {
+      // get from cache
+      final response = await _localDataSource.getHomeData();
+      print("HOMEISSUE  response _localDataSource"+response.data.toString());
+
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      // we have cache error so we should call API
+      print("HOMEISSUE  response cacheError"+cacheError.toString());
+
+      if (await _networkInfo.isConnected) {
+        print("HOMEISSUE  response _networkInfo.isConnected "+_networkInfo.isConnected.toString());
+
+        try {
+          // its safe to call the API
+          final response = await _remoteDataSource.getHomeData();
+
+          if (response.status == ApiInternalStatus.SUCCESS) // success
+              {
+            // return data (success)
+            // return right
+            // save response to local data source
+            _localDataSource.saveHomeToCache(response);
+            return Right(response.toDomain());
+          } else {
+            // return biz logic error
+            // return left
+            return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+                response.message ?? ResponseMessage.DEFAULT));
+          }
+        } catch (error) {
+          return (Left(ErrorHandler.handle(error).failure));
+        }
+      } else {
+        // return connection error
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     }

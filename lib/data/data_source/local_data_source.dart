@@ -16,8 +16,8 @@ Future<void> saveHomeToCache(HomeResponse homeResponse);
 
 void clearCache();
 void removeFromCache(String key);
-Future<StoreDataResponse> getStoreDetails();
-Future<void> saveStoreDetailsToCache(StoreDataResponse response);
+Future<StoreDetailsResponse> getStoreDetails();
+Future<void> saveStoreDetailsToCache(StoreDetailsResponse response);
 }
 
  class LocalDataSourceImpl extends LocalDataSource{
@@ -54,7 +54,7 @@ Future<void> saveStoreDetailsToCache(StoreDataResponse response);
   }
 
   @override
-  Future<StoreDataResponse> getStoreDetails() {
+  Future<StoreDetailsResponse> getStoreDetails() {
    CachedItem? cacheItem = cacheMap[CACHE_STORE_DETAILS_KEY];
    if(cacheItem != null &&
     cacheItem.isValid(CACHE_STORE_DETAILS_INTERVAL)
@@ -66,7 +66,7 @@ Future<void> saveStoreDetailsToCache(StoreDataResponse response);
   }
 
   @override
-  Future<void> saveStoreDetailsToCache(StoreDataResponse response
+  Future<void> saveStoreDetailsToCache(StoreDetailsResponse response
       ) async {
     cacheMap[CACHE_STORE_DETAILS_KEY] = CachedItem(response);
   }

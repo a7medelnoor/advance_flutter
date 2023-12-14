@@ -58,12 +58,12 @@ class Store {
 
 class BannerAd {
   int id;
-  String link;
   String title;
   String image;
+  String link;
 
 
-  BannerAd(this.id,this.link, this.title, this.image );
+  BannerAd(this.id, this.title, this.image,this.link );
 }
 
 class HomeData {

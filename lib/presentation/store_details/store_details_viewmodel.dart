@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:rxdart/rxdart.dart';
 
 import '../../data/response/responses.dart';
+import '../../domain/model/model.dart';
 import '../../domain/usecase/store_details_usecase.dart';
 import '../common/state_rander/state_randerer.dart';
 import '../common/state_rander/state_randerer_impl.dart';
@@ -12,7 +13,7 @@ import '/presentation/base/baseviewmodel.dart';
 
 class StoreDetailsViewModel extends BaseViewModel
     with StoreDetailsViewModelInput, StoreDetailsViewModelOutput {
-  final _storeDetailsStreamController = BehaviorSubject<StoreDataResponse>();
+  final _storeDetailsStreamController = BehaviorSubject<StoreDetailsModel>();
 
   final StoreDetailsUseCase storeDetailsUseCase;
 
@@ -48,7 +49,7 @@ class StoreDetailsViewModel extends BaseViewModel
 
   //output
   @override
-  Stream<StoreDataResponse> get outputStoreDetails =>
+  Stream<StoreDetailsModel> get outputStoreDetails =>
       _storeDetailsStreamController.stream.map((stores) => stores);
 }
 
@@ -57,5 +58,5 @@ abstract class StoreDetailsViewModelInput {
 }
 
 abstract class StoreDetailsViewModelOutput {
-  Stream<StoreDataResponse> get outputStoreDetails;
+  Stream<StoreDetailsModel> get outputStoreDetails;
 }

@@ -1,3 +1,4 @@
+
 import 'package:advance_flutter/domain/model/model.dart';
 import 'package:advance_flutter/presentation/common/state_rander/state_randerer_impl.dart';
 import 'package:advance_flutter/presentation/main/pages/home/viewmodel/home_viewmodel.dart';
@@ -6,12 +7,9 @@ import 'package:advance_flutter/presentation/resources/routes_manager.dart';
 import 'package:advance_flutter/presentation/resources/strings_manager.dart';
 import 'package:advance_flutter/presentation/resources/values_manager.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../app/di.dart';
-import 'dart:ffi';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -22,14 +20,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeViewModel _viewModel = instance<HomeViewModel>();
 
-  _bind() {
-    _viewModel.start();
-  }
-
   @override
   void initState() {
     _bind();
+
     super.initState();
+  }
+
+  _bind() {
+    _viewModel.start();
   }
 
   @override
@@ -37,138 +36,146 @@ class _HomePageState extends State<HomePage> {
     return Center(
       child: SingleChildScrollView(
         child: StreamBuilder<FlowState>(
-            stream: _viewModel.outputState,
-            builder: (context, snapchot) {
-              return snapchot.data
-                      ?.getScreenWidget(context, _getContentWidget(), () {
-                    _viewModel.start();
-                  }) ??
-                  _getContentWidget();
-            }),
+          stream: _viewModel.outputState,
+          builder: (context, snapshot) {
+            if (snapshot.data is LoadingState) {
+              print("HOMEISSUE LoadingState snapchot data${snapshot.data}");
+
+            }
+            else if (snapshot.data is ErrorState) {
+              print("HOMEISSUE ErrorState snapchot data${snapshot.data}");
+
+            }
+            print("HOMEISSUE SingleChildScrollView snapchot data${snapshot.data}");
+            return snapshot.data?.getScreenWidget(context, _getContentWidgets(),
+                    () {
+                  _viewModel.start();
+                }) ??
+                Container();
+          },
+        ),
       ),
     );
   }
-
-  Widget _getContentWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _getBannersCarousel(),
-        _getSection(AppStrings.services),
-        _getServices(),
-        _getSection(AppStrings.stores),
-        _getStore(),
-      ],
+  Widget _buildErrorWidget(String errorMessage) {
+    return Center(
+      child: Text('Error: $errorMessage'),
     );
   }
-
-  Widget _getStore() {
+  Widget _buildLoadingWidget() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+  Widget _getContentWidgets() {
     return StreamBuilder<HomeViewObject>(
         stream: _viewModel.outputHomeData,
         builder: (context, snapshot) {
-          return _getStoresWidget(snapshot.data?.stores);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _getBanner(snapshot.data?.banners),
+              _getSection(AppStrings.services),
+              _getServicesWidget(snapshot.data?.services),
+              _getSection(AppStrings.stores),
+              _getStoresWidget(snapshot.data?.stores),
+            ],
+          );
+
         });
   }
 
-  Widget _getStoresWidget(List<Store>? stores) {
-    if (stores != null) {
-      return Padding(
-        padding: EdgeInsets.only(
-            left: AppPadding.p12, right: AppPadding.p12, top: AppPadding.p12),
-        child: Flex(
-          direction: Axis.vertical,
-          children: [
-            GridView.count(
-              crossAxisCount: AppSize.s2,
-              crossAxisSpacing: AppSize.s8,
-              mainAxisSpacing: AppSize.s8,
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              children: List.generate(stores.length, (index) {
-                return InkWell(
-                  onTap: () {
-                    // navigate to store details screens
-                    Navigator.of(context).pushNamed(Routes.storeDetailsRoute);
-                  },
-                  child: Card(
-                    elevation: AppSize.s4,
-                    child: Image.network(stores[index].image, fit: BoxFit.cover,),
-                  ),
-                );
-              }),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
   Widget _getSection(String title) {
+    print("HOMEISSUE   _getSection"+title.toString());
+
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
           top: AppPadding.p12,
           left: AppPadding.p12,
           right: AppPadding.p12,
           bottom: AppPadding.p2),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.labelSmall,
+        style: Theme.of(context).textTheme.headline3,
       ),
     );
   }
 
-  Widget _getServices() {
-    return StreamBuilder<HomeViewObject>(
-        stream: _viewModel.outputHomeData,
-        builder: (context, snapshot) {
-          return _getServicesWidget(snapshot.data?.services);
-        });
+  Widget _getBanner(List<BannerAd>? banners) {
+    print("HOMEISSUE"+banners.toString());
+    if (banners != null) {
+      return CarouselSlider(
+          items: banners
+              .map((banner) => SizedBox(
+            width: double.infinity,
+            child: Card(
+              elevation: AppSize.s1_5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s12),
+                  side: BorderSide(
+                      color: ColorManager.white, width: AppSize.s1_5)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppSize.s12),
+                child: Image.network(
+                  banner.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ))
+              .toList(),
+          options: CarouselOptions(
+              height: AppSize.s190,
+              autoPlay: true,
+              enableInfiniteScroll: true,
+              enlargeCenterPage: true));
+    } else {
+      return Container();
+    }
   }
 
   Widget _getServicesWidget(List<Service>? services) {
+    print("HOMEISSUE"+services.toString());
+
     if (services != null) {
       return Padding(
-        padding:
-            const EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
+        padding: EdgeInsets.only(left: AppPadding.p12, right: AppPadding.p12),
         child: Container(
-          height: AppSize.s160,
-          margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
+          height: AppSize.s140,
+          margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: services
                 .map((service) => Card(
-                      elevation: AppSize.s4,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSize.s12),
-                          side: BorderSide(
-                              color: ColorManager.primary, width: AppSize.s1)),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(AppSize.s12),
-                            child: Image.network(
-                              service.image,
-                              fit: BoxFit.cover,
-                              width: AppSize.s120,
-                              height: AppSize.s100,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: AppPadding.p8),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                service.title,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                          ),
-                        ],
+              elevation: AppSize.s4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s12),
+                  side: BorderSide(
+                      color: ColorManager.white, width: AppSize.s1_5)),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppSize.s12),
+                    child: Image.network(
+                      service.image,
+                      fit: BoxFit.cover,
+                      width: AppSize.s120,
+                      height: AppSize.s100,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: AppPadding.p8),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        service.title,
+                        textAlign: TextAlign.center,
                       ),
-                    ))
+                    ),
+                  )
+                ],
+              ),
+            ))
                 .toList(),
           ),
         ),
@@ -178,41 +185,41 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _getBannersCarousel() {
-    return StreamBuilder<HomeViewObject>(
-        stream: _viewModel.outputHomeData,
-        builder: (context, snapshot) {
-          return _getBannerWidget(snapshot.data?.banners);
-        });
-  }
+  Widget _getStoresWidget(List<Store>? stores) {
+    print("HOMEISSUE"+stores.toString());
 
-  Widget _getBannerWidget(List<BannerAd>? banners) {
-    if (banners != null) {
-      return CarouselSlider(
-          items: banners
-              .map((banner) => SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      elevation: AppSize.s1_5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSize.s12),
-                          side: BorderSide(
-                              color: ColorManager.primary, width: AppSize.s1)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(AppSize.s12),
-                        child: Image.network(
-                          banner.image,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+    if (stores != null) {
+      return Padding(
+        padding: EdgeInsets.only(
+            left: AppPadding.p12, right: AppPadding.p12, top: AppPadding.p12),
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            GridView.count(
+              crossAxisSpacing: AppSize.s8,
+              mainAxisSpacing: AppSize.s8,
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: List.generate(stores.length, (index) {
+                return InkWell(
+                  onTap: () {
+                    // navigate to store details screen
+                    Navigator.of(context).pushNamed(Routes.storeDetailsRoute);
+                  },
+                  child: Card(
+                    elevation: AppSize.s4,
+                    child: Image.network(
+                      stores[index].image,
+                      fit: BoxFit.cover,
                     ),
-                  ))
-              .toList(),
-          options: CarouselOptions(
-              height: AppSize.s190,
-              autoPlay: true,
-              enableInfiniteScroll: true,
-              enlargeCenterPage: true));
+                  ),
+                );
+              }),
+            )
+          ],
+        ),
+      );
     } else {
       return Container();
     }
