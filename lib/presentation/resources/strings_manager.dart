@@ -49,6 +49,10 @@ class AppStrings {
   static String details = "Details";
   static String about = "About";
   static String storeDetails = "Store Details";
+  static String changeLanguage = "Change Language";
+  static String contactUs = "Contact US";
+  static String inviteYourFriends = "Invite Your Friends";
+  static String logout = "Logout";
 
 
 }
