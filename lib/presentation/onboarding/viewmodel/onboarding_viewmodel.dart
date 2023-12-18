@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:advance_flutter/domain/model/model.dart';
 import 'package:advance_flutter/presentation/base/baseviewmodel.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../resources/assests_manager.dart';
 import '../../resources/strings_manager.dart';
@@ -65,13 +66,13 @@ class OnBoardingViewModel extends BaseViewModel
 
   // private functions
   List<SliderObject> _getSliderData() => [
-    SliderObject(AppStrings.onBoardingTitle1,
+    SliderObject(AppStrings.onBoardingTitle1.tr(),
         AppStrings.onBoardingSubTitle1, ImageAssets.onboardingImage1),
-    SliderObject(AppStrings.onBoardingTitle2,
+    SliderObject(AppStrings.onBoardingTitle2.tr(),
         AppStrings.onBoardingSubTitle2, ImageAssets.onboardingImage2),
-    SliderObject(AppStrings.onBoardingTitle3,
+    SliderObject(AppStrings.onBoardingTitle3.tr(),
         AppStrings.onBoardingSubTitle3, ImageAssets.onboardingImage3),
-    SliderObject(AppStrings.onBoardingTitle4,
+    SliderObject(AppStrings.onBoardingTitle4.tr(),
         AppStrings.onBoardingSubTitle4, ImageAssets.onboardingImage4)
   ];
 

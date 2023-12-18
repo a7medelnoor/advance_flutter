@@ -1,6 +1,7 @@
 import 'package:advance_flutter/app/constants.dart';
 import 'package:advance_flutter/presentation/common/state_rander/state_randerer.dart';
 import 'package:advance_flutter/presentation/resources/strings_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 abstract class FlowState {
@@ -134,7 +135,7 @@ extension FlowStateExtension on FlowState {
 
           // show popup
           showPopUp(context, StateRendererType.POPUP_SUCCESS, getMessage(),
-              title: AppStrings.success);
+              title: AppStrings.success.tr());
           // return content ui of the screen
           return contentScreenWidget;
         }
