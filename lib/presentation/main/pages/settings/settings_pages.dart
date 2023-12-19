@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../resources/assests_manager.dart';
 import '../../../resources/routes_manager.dart';
 
+import 'dart:math' as math;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   final LocalDataSource _localDataSource = instance<LocalDataSource>();
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -35,13 +37,11 @@ class _SettingsPageState extends State<SettingsPage> {
               AppStrings.changeLanguage.tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            trailing:
-            Transform(
-              alignment: Alignment.center, transform: null,
-              // transform: Matrix4.rotationX(isRTL() ?  math),
+            trailing: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(isRTL() ? math.pi : 0),
+              child: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
             ),
-
-            SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
             onTap: () {
               _changeLanguage();
             },
@@ -52,7 +52,11 @@ class _SettingsPageState extends State<SettingsPage> {
               AppStrings.contactUs.tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            trailing: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            trailing: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(isRTL() ? math.pi : 0),
+              child: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            ),
             onTap: () {
               _contactUs();
             },
@@ -63,7 +67,11 @@ class _SettingsPageState extends State<SettingsPage> {
               AppStrings.inviteYourFriends.tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            trailing: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            trailing: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(isRTL() ? math.pi : 0),
+              child: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            ),
             onTap: () {
               _inviteYourFriends();
             },
@@ -74,7 +82,11 @@ class _SettingsPageState extends State<SettingsPage> {
               AppStrings.logout.tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            trailing: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            trailing: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(isRTL() ? math.pi : 0),
+              child: SvgPicture.asset(ImageAssets.photoSettingsRightArrowIc),
+            ),
             onTap: () {
               _logout();
             },
@@ -83,29 +95,25 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-  bool isRTL(){
+
+  bool isRTL() {
     return context.locale == ARABIC_LOCALE;
   }
+
   _changeLanguage() {
-_appPreferences.changeAppLanguages();
-Phoenix.rebirth(context);
-
+    _appPreferences.changeAppLanguages();
+    Phoenix.rebirth(context);
   }
 
-  _contactUs() {
+  _contactUs() {}
 
-
-  }
-
-  _inviteYourFriends() {
-
-  }
+  _inviteYourFriends() {}
 
   _logout() {
     // logout remove shared pref
     _appPreferences.logout();
     //clear all cache
-     _localDataSource.clearCache();
+    _localDataSource.clearCache();
     // navigate to the home screen
     Navigator.pushReplacementNamed(context, Routes.loginRoute);
   }
